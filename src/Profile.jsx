@@ -1,19 +1,37 @@
-import { Outlet } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Spinach from "./Spinach";
+import Popeye from "./Popeye";
+import ErrorPage from "./ErrorPage";
 
 const Profile = () => {
-  return (
-    <div>
-      <h1>Hello from profile page!</h1>
-      <p>So, how are you?</p>
-      <hr />
-      <h2>The profile visited is here:</h2>
-      <Outlet />
-    </div>
-  );
+  const { name } = useParams();
+  let component;
+  name === "popeye" ? (
+    component = <Popeye />
+  ) : name === "spinach" ? (
+    component = <Spinach />
+  ) : name === undefined ? (
+    component = <DefaultProfile />
+  ) : null
+
+
+  if (component) {
+    return (
+      <div>
+        <h1>Hello from the profile page!</h1>
+        <hr />
+        <h2>Profiles will appear here:</h2>
+        {component}
+      </div>
+    );
+  } else {
+    return (<ErrorPage />);
+  }
+  
 };
 
 const DefaultProfile = () => {
-    return <p>Oh, nothing to see here!</p>;
+    return <p>This is the default profile, add /spinach or /popeye to the end of the URL to see other profiles</p>;
   };
 
-export {Profile, DefaultProfile};
+export default Profile;
